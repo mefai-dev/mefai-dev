@@ -1,0 +1,28 @@
+name: Update README
+
+on:
+  schedule:
+    
+    - cron: '0 0 * * *'
+  workflow_dispatch: 
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repo
+        uses: actions/checkout@v3
+
+      - name: Update README
+        run: |
+          
+          echo "Last updated: $(date)" >> README.md
+
+      - name: Commit and Push
+        run: |
+          git config --global user.name 'github-actions[bot]'
+          git config --global user.email 'github-actions[bot]@users.noreply.github.com'
+          git add README.md
+          
+          git diff --quiet && git diff --staged --quiet || git commit -m "📝 Auto-update README"
+          git push
